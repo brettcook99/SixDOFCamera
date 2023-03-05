@@ -3,7 +3,7 @@ public class SixDOFCamera : MonoBehaviour
 {
     public float speed = 1.0f;
     public float fastSpeed = 2.0f;
-    public float mouseSpeed = 4.0f;
+    public float mouseSpeed = 100.0f;
 
     private Transform TR;
 
@@ -18,9 +18,22 @@ public class SixDOFCamera : MonoBehaviour
 
     private void Update()
     {
+        // Mousewheel speed control
+        float mouseDelta = Input.mouseScrollDelta.y;
+        if (mouseDelta > 0)
+        {
+            speed *= 2f;
+            fastSpeed *= 2f;
+        }
+        else if (mouseDelta < 0)
+        {
+            speed /= 2f;
+            fastSpeed /= 2f;
+        }
+
         // Pitch/Yaw
-        TR.Rotate(-Vector3.right * (Input.GetAxis("Mouse Y") * 1200) * Time.deltaTime);
-        TR.Rotate(Vector3.up * (Input.GetAxis("Mouse X") * 1200) * Time.deltaTime);
+        TR.Rotate(-Vector3.right * (Input.GetAxis("Mouse Y") * mouseSpeed) * Time.deltaTime);
+        TR.Rotate(Vector3.up * (Input.GetAxis("Mouse X") * mouseSpeed) * Time.deltaTime);
         
         // Roll
         if (Input.GetKey(KeyCode.Q))
